@@ -71,25 +71,25 @@
       const toggle = document.querySelector("#toggle");
       const toggled = document.querySelector("#toggled");
       const urlParams = new URLSearchParams(window.location.search);
-      const blockForParam = Number(urlParams.get("blockFor")) || 0;
+      const timeToBlockFor = Number(urlParams.get("blockFor")) || 0;
+      const timeToYieldFor = 1000;
 
       const blockFor = (ms) => {
         const target = performance.now() + ms;
         while (performance.now() < target);
       };
 
-      const timeToBlockFor = 1500;
-      const timeToYieldFor = 500;
-      setInterval(() => {
-        console.log("🛑 Blocked");
-        blockFor(timeToBlockFor);
-        console.log("▶️ Resumed");
-      }, timeToBlockFor + timeToYieldFor);
-
       toggle.addEventListener("click", () => {
-        blockFor(blockForParam);
         toggled.classList.toggle("hidden");
       });
+
+      if (timeToBlockFor > 0) {
+        setInterval(() => {
+          //console.log("🛑 Long task start");
+          blockFor(timeToBlockFor);
+          //console.log("▶️ Long task stop");
+        }, timeToBlockFor + timeToYieldFor);
+      }
     </script>
   </body>
 </html>
